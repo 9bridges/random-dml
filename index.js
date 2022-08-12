@@ -36,18 +36,21 @@ const knexClient = knex({
 
                 switch (randomOperation) {
                     case 0:
+                        // INSERT
                         INITIAL_NUMBER += 1
                         return await knexClient(TABLE_NAME).insert({
                             id: INITIAL_NUMBER,
                             name: faker.name.firstName(),
                         })
                     case 1:
+                        // UPDATE
                         return await knexClient(TABLE_NAME)
                             .update({
                                 name: `${faker.name.firstName()}（已改）`,
                             })
                             .where({ id: randomNumber })
                     case 2:
+                        // DELETE
                         return await knexClient(TABLE_NAME)
                             .delete()
                             .where({ id: randomNumber })
