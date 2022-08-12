@@ -1,0 +1,22 @@
+{
+    "name": "random-dml",
+    "version": "1.0.0",
+    "description": "A Node.js script that randomly executes DML statement",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://gitee.com/tb-soft/random-dml.git"
+    },
+    "author": "Bokang Huang <huangbokang@tb-soft.net>",
+    "license": "ISC",
+    "dependencies": {
+        "@faker-js/faker": "^7.4.0",
+        "knex": "^2.2.0",
+        "mysql": "^2.18.1"
+    }
+}
