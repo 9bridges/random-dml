@@ -1,5 +1,7 @@
 import config from 'config'
+import minimist from 'minimist'
 import knex from 'knex'
+import schemaInspector from 'knex-schema-inspector'
 import { faker } from '@faker-js/faker'
 
 const knexClient = knex({
@@ -12,11 +14,31 @@ const knexClient = knex({
         database: config.get('db.database'),
     },
 })
+const knexInspector = schemaInspector.default(knexClient)
 
-;(async () => {
+const TABLE_NAME = config.get('db.table')
+
+const batchInsert = async () => {
+    const NUMBER = config.get('number.insert')
+    try {
+        await knexClient.batchInsert(
+            TABLE_NAME,
+            [...Array(NUMBER).keys()].map((n) => ({
+                id: n + 1,
+                name: faker.name.firstName(),
+            }))
+        )
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}
+
+const batchUpdate = async () => {}
+const batchDelete = async () => {}
+
+const randomDML = async () => {
     let INITIAL_NUMBER = config.get('number.random.initial')
     const INCREMENTAL_NUMBER = config.get('number.random.dml')
-    const TABLE_NAME = config.get('db.table')
 
     try {
         // Insert a certain number of records
@@ -58,7 +80,33 @@ const knexClient = knex({
                 }
             })
         )
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}
 
+;(async () => {
+    const argv = minimist(process.argv.slice(2))
+    try {
+        switch (argv.o) {
+            case 'i':
+                console.log('Performing batch insert...')
+                await batchInsert()
+                break
+            case 'u':
+                console.log('Performing batch update...')
+                await batchUpdate()
+                break
+            case 'd':
+                console.log('Performing batch delete...')
+                await batchDelete()
+                break
+            default:
+                console.log('Performing random dml...')
+                await randomDML()
+                break
+        }
+        console.log('Done.')
         process.exit(0)
     } catch (error) {
         console.error(error)

@@ -6,6 +6,9 @@
     "type": "module",
     "scripts": {
         "start": "node index.js",
+        "insert": "node index.js -o i",
+        "update": "node index.js -o u",
+        "delete": "node index.js -o d",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
@@ -19,6 +22,7 @@
         "config": "^3.3.7",
         "knex": "^2.2.0",
         "knex-schema-inspector": "^2.0.4",
+        "minimist": "^1.2.6",
         "mysql": "^2.18.1"
     }
 }
