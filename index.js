@@ -1,21 +1,22 @@
+import config from 'config'
 import knex from 'knex'
 import { faker } from '@faker-js/faker'
 
 const knexClient = knex({
-    client: 'mysql',
+    client: config.get('db.client'),
     connection: {
-        host: '101.42.116.95',
-        port: 3306,
-        user: 'jiuqiao',
-        password: 'jiuqiao',
-        database: 'test',
+        host: config.get('db.host'),
+        port: config.get('db.port'),
+        user: config.get('db.user'),
+        password: config.get('db.password'),
+        database: config.get('db.database'),
     },
 })
 
 ;(async () => {
-    let INITIAL_NUMBER = 100
-    const INCREMENTAL_NUMBER = 20
-    const TABLE_NAME = 'test'
+    let INITIAL_NUMBER = config.get('number.random.initial')
+    const INCREMENTAL_NUMBER = config.get('number.random.dml')
+    const TABLE_NAME = config.get('db.table')
 
     try {
         // Insert a certain number of records

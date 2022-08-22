@@ -16,7 +16,9 @@
     "license": "ISC",
     "dependencies": {
         "@faker-js/faker": "^7.4.0",
+        "config": "^3.3.7",
         "knex": "^2.2.0",
+        "knex-schema-inspector": "^2.0.4",
         "mysql": "^2.18.1"
     }
 }
