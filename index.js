@@ -17,6 +17,29 @@ const knexClient = knex({
 const knexInspector = schemaInspector.default(knexClient)
 
 const TABLE_NAME = config.get('db.table')
+let COLUMN_INFO
+
+const generateRandomRow = () =>
+    COLUMN_INFO.reduce((acc, column) => {
+        const { name, data_type, is_primary_key, default_value } = column
+        if (is_primary_key) return acc
+        if (default_value) return acc
+
+        let value
+        switch (data_type) {
+            case 'int':
+                value = faker.datatype.number()
+            case 'varchar':
+                const { max_length } = column
+                // 10 is default length
+                value = faker.datatype.string(max_length < 10 ? max_length : 10)
+        }
+
+        return {
+            ...acc,
+            [name]: value,
+        }
+    }, {})
 
 const batchInsert = async () => {
     const NUMBER = config.get('number.insert')
@@ -25,7 +48,7 @@ const batchInsert = async () => {
             TABLE_NAME,
             [...Array(NUMBER).keys()].map((n) => ({
                 id: n + 1,
-                name: faker.name.firstName(),
+                ...generateRandomRow(),
             }))
         )
     } catch (error) {
@@ -86,26 +109,38 @@ const randomDML = async () => {
 }
 
 ;(async () => {
-    const argv = minimist(process.argv.slice(2))
+    const { o, t } = minimist(process.argv.slice(2))
     try {
-        switch (argv.o) {
-            case 'i':
-                console.log('Performing batch insert...')
-                await batchInsert()
-                break
-            case 'u':
-                console.log('Performing batch update...')
-                await batchUpdate()
-                break
-            case 'd':
-                console.log('Performing batch delete...')
-                await batchDelete()
-                break
-            default:
-                console.log('Performing random dml...')
-                await randomDML()
-                break
+        COLUMN_INFO = await knexInspector.columnInfo(TABLE_NAME)
+
+        if (o) {
+            switch (o) {
+                case 'i':
+                    console.log('Performing batch insert...')
+                    await batchInsert()
+                    break
+                case 'u':
+                    console.log('Performing batch update...')
+                    await batchUpdate()
+                    break
+                case 'd':
+                    console.log('Performing batch delete...')
+                    await batchDelete()
+                    break
+            }
+        } else if (t) {
+            switch (t) {
+                case 'row':
+                    console.log('TEST: Generating a random row...')
+                    const row = await generateRandomRow()
+                    console.log(row)
+                    break
+            }
+        } else {
+            console.log('Performing random dml...')
+            await randomDML()
         }
+
         console.log('Done.')
         process.exit(0)
     } catch (error) {
