@@ -10,7 +10,7 @@
         "update": "node index.js -o u",
         "delete": "node index.js -o d",
         "testRow": "nodemon index.js -t row",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "mocha"
     },
     "repository": {
         "type": "git",
@@ -25,5 +25,8 @@
         "knex-schema-inspector": "^2.0.4",
         "minimist": "^1.2.6",
         "mysql": "^2.18.1"
+    },
+    "devDependencies": {
+        "mocha": "^10.0.0"
     }
 }

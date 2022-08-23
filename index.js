@@ -89,26 +89,30 @@ const randomDML = async () => {
                     Math.floor(Math.random() * INITIAL_NUMBER) + 1
                 const randomOperation = Math.floor(Math.random() * 3)
 
-                switch (randomOperation) {
-                    case 0:
-                        // INSERT
-                        INITIAL_NUMBER += 1
-                        return await knexClient(TABLE_NAME).insert({
-                            id: INITIAL_NUMBER,
-                            name: faker.name.firstName(),
-                        })
-                    case 1:
-                        // UPDATE
-                        return await knexClient(TABLE_NAME)
-                            .update({
-                                name: `${faker.name.firstName()}（已改）`,
+                try {
+                    switch (randomOperation) {
+                        case 0:
+                            // INSERT
+                            INITIAL_NUMBER += 1
+                            return await knexClient(TABLE_NAME).insert({
+                                id: INITIAL_NUMBER,
+                                name: faker.name.firstName(),
                             })
-                            .where({ id: randomNumber })
-                    case 2:
-                        // DELETE
-                        return await knexClient(TABLE_NAME)
-                            .delete()
-                            .where({ id: randomNumber })
+                        case 1:
+                            // UPDATE
+                            return await knexClient(TABLE_NAME)
+                                .update({
+                                    name: `${faker.name.firstName()}（已改）`,
+                                })
+                                .where({ id: randomNumber })
+                        case 2:
+                            // DELETE
+                            return await knexClient(TABLE_NAME)
+                                .delete()
+                                .where({ id: randomNumber })
+                    }
+                } catch (error) {
+                    console.error(error)
                 }
             })
         )
