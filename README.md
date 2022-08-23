@@ -7,3 +7,9 @@ To run the application:
 ```
 npm start
 ```
+
+To start unit testing:
+
+```
+npm test
+```
