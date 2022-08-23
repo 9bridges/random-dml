@@ -64,14 +64,23 @@ const randomDML = async () => {
     const INCREMENTAL_NUMBER = config.get('number.random.dml')
 
     try {
-        // Insert a certain number of records
-        await knexClient.batchInsert(
-            TABLE_NAME,
-            [...Array(INITIAL_NUMBER).keys()].map((n) => ({
-                id: n + 1,
-                name: faker.name.firstName(),
-            }))
-        )
+        // Check empty table first
+        const [{ count: rowCount }] = await knexClient(TABLE_NAME).count({
+            count: '*',
+        })
+
+        if (rowCount === 0) {
+            // Insert a certain number of records
+            await knexClient.batchInsert(
+                TABLE_NAME,
+                [...Array(INITIAL_NUMBER).keys()].map((n) => ({
+                    id: n + 1,
+                    name: faker.name.firstName(),
+                }))
+            )
+        } else {
+            INITIAL_NUMBER = rowCount
+        }
 
         // Perform random DML operations
         await Promise.all(
