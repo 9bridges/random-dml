@@ -4,6 +4,8 @@ import knex from 'knex'
 import schemaInspector from 'knex-schema-inspector'
 import { faker } from '@faker-js/faker'
 
+import { generateRandomRow } from './helper.js'
+
 const knexClient = knex({
     client: config.get('db.client'),
     connection: {
@@ -19,28 +21,6 @@ const knexInspector = schemaInspector.default(knexClient)
 const TABLE_NAME = config.get('db.table')
 let COLUMN_INFO
 
-const generateRandomRow = () =>
-    COLUMN_INFO.reduce((acc, column) => {
-        const { name, data_type, is_primary_key, default_value } = column
-        if (is_primary_key) return acc
-        if (default_value) return acc
-
-        let value
-        switch (data_type) {
-            case 'int':
-                value = faker.datatype.number()
-            case 'varchar':
-                const { max_length } = column
-                // 10 is default length
-                value = faker.datatype.string(max_length < 10 ? max_length : 10)
-        }
-
-        return {
-            ...acc,
-            [name]: value,
-        }
-    }, {})
-
 const batchInsert = async () => {
     const NUMBER = config.get('number.insert')
     try {
@@ -48,7 +28,7 @@ const batchInsert = async () => {
             TABLE_NAME,
             [...Array(NUMBER).keys()].map((n) => ({
                 id: n + 1,
-                ...generateRandomRow(),
+                ...generateRandomRow(COLUMN_INFO),
             }))
         )
     } catch (error) {
@@ -145,7 +125,7 @@ const randomDML = async () => {
             switch (t) {
                 case 'row':
                     console.log('TEST: Generating a random row...')
-                    const row = await generateRandomRow()
+                    const row = await generateRandomRow(COLUMN_INFO)
                     console.log(row)
                     break
             }
