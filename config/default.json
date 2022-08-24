@@ -14,7 +14,7 @@
         "delete": 100,
         "random": {
             "initial": 100,
-            "dml": 50
+            "dml": 20
         }
     }
 }

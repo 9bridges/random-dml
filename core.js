@@ -11,6 +11,16 @@ import {
 
 export const batchInsert = async (number = INSERT_NUMBER) => {
     try {
+        // Check empty table first
+        const [{ count: rowCount }] = await knexClient(TABLE_NAME).count({
+            count: '*',
+        })
+
+        if (rowCount > 0) {
+            await knexClient(TABLE_NAME).truncate()
+            // NOTE: truncate sink tables if needed
+        }
+
         await knexClient.batchInsert(
             TABLE_NAME,
             [...Array(number).keys()].map((n) => ({
@@ -45,23 +55,8 @@ export const randomDML = async (
 ) => {
     let init = initial
     try {
-        // Check empty table first
-        const [{ count: rowCount }] = await knexClient(TABLE_NAME).count({
-            count: '*',
-        })
-
-        if (rowCount === 0) {
-            // Insert a certain number of records
-            await knexClient.batchInsert(
-                TABLE_NAME,
-                [...Array(init).keys()].map((n) => ({
-                    id: n + 1,
-                    name: faker.name.firstName(),
-                }))
-            )
-        } else {
-            init = rowCount
-        }
+        // Batch insert
+        await batchInsert(init)
 
         // Perform random DML operations
         await Promise.all(
@@ -76,14 +71,12 @@ export const randomDML = async (
                             init += 1
                             return await knexClient(TABLE_NAME).insert({
                                 id: init,
-                                name: faker.name.firstName(),
+                                ...generateRandomRow(),
                             })
                         case 1:
                             // UPDATE
                             return await knexClient(TABLE_NAME)
-                                .update({
-                                    name: `${faker.name.firstName()}（已改）`,
-                                })
+                                .update(generateRandomRow())
                                 .where({ id: randomNumber })
                         case 2:
                             // DELETE
