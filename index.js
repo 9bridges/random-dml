@@ -1,22 +1,9 @@
 import config from 'config'
 import minimist from 'minimist'
-import knex from 'knex'
-import schemaInspector from 'knex-schema-inspector'
 import { faker } from '@faker-js/faker'
 
+import { knexClient, knexInspector } from './knex.js'
 import { generateRandomRow } from './helper.js'
-
-const knexClient = knex({
-    client: config.get('db.client'),
-    connection: {
-        host: config.get('db.host'),
-        port: config.get('db.port'),
-        user: config.get('db.user'),
-        password: config.get('db.password'),
-        database: config.get('db.database'),
-    },
-})
-const knexInspector = schemaInspector.default(knexClient)
 
 const TABLE_NAME = config.get('db.table')
 let COLUMN_INFO
