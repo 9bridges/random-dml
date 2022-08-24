@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 
-export const generateRandomRow = (columnInfo) => {
-    return columnInfo.reduce((acc, column) => {
+export const generateRandomRow = () =>
+    global.COLUMN_INFO.reduce((acc, column) => {
         const { name, data_type, is_primary_key, default_value } = column
         if (is_primary_key) return acc
         if (default_value) return acc
@@ -21,4 +21,6 @@ export const generateRandomRow = (columnInfo) => {
             [name]: value,
         }
     }, {})
-}
+
+export const getPrimaryKey = () =>
+    global.COLUMN_INFO.find((column) => column.is_primary_key)

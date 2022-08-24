@@ -2,7 +2,7 @@ import minimist from 'minimist'
 
 import { knexInspector } from './knex.js'
 import { batchInsert, batchUpdate, batchDelete, randomDML } from './core.js'
-import { generateRandomRow } from './helper.js'
+import { generateRandomRow, getPrimaryKey } from './helper.js'
 import { TABLE_NAME } from './constant.js'
 
 const run = async () => {
@@ -30,8 +30,13 @@ const run = async () => {
             switch (t) {
                 case 'row':
                     console.log('TEST: Generating a random row...')
-                    const row = await generateRandomRow(COLUMN_INFO)
+                    const row = await generateRandomRow()
                     console.log(row)
+                    break
+                case 'pk':
+                    console.log('TEST: Looking for the primary key...')
+                    const primaryKey = getPrimaryKey()
+                    console.log(primaryKey)
                     break
             }
         } else {

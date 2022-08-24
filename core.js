@@ -15,7 +15,7 @@ export const batchInsert = async (number = INSERT_NUMBER) => {
             TABLE_NAME,
             [...Array(number).keys()].map((n) => ({
                 id: n + 1,
-                ...generateRandomRow(COLUMN_INFO),
+                ...generateRandomRow(),
             }))
         )
     } catch (error) {
@@ -23,8 +23,21 @@ export const batchInsert = async (number = INSERT_NUMBER) => {
     }
 }
 
-export const batchUpdate = async () => {}
-export const batchDelete = async () => {}
+export const batchUpdate = async () => {
+    try {
+        await knexClient.update(TABLE_NAME).update(generateRandomRow())
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}
+
+export const batchDelete = async () => {
+    try {
+        await knexClient.delete(TABLE_NAME)
+    } catch (error) {
+        return Promise.reject(error)
+    }
+}
 
 export const randomDML = async (
     initial = INITIAL_NUMBER,
