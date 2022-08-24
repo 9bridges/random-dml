@@ -25,7 +25,7 @@ export const batchInsert = async (number = INSERT_NUMBER) => {
 
 export const batchUpdate = async () => {
     try {
-        await knexClient.update(TABLE_NAME).update(generateRandomRow())
+        await knexClient(TABLE_NAME).update(generateRandomRow())
     } catch (error) {
         return Promise.reject(error)
     }
@@ -33,7 +33,7 @@ export const batchUpdate = async () => {
 
 export const batchDelete = async () => {
     try {
-        await knexClient.delete(TABLE_NAME)
+        await knexClient(TABLE_NAME).delete()
     } catch (error) {
         return Promise.reject(error)
     }
