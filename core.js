@@ -1,5 +1,3 @@
-import { faker } from '@faker-js/faker'
-
 import { knexClient } from './knex.js'
 import { generateRandomRow } from './helper.js'
 import {
@@ -17,8 +15,8 @@ export const batchInsert = async (number = INSERT_NUMBER) => {
         })
 
         if (rowCount > 0) {
-            await knexClient(TABLE_NAME).truncate()
-            // NOTE: truncate sink tables if needed
+            await batchDelete()
+            // NOTE: truncate might be faster
         }
 
         await knexClient.batchInsert(
@@ -53,34 +51,39 @@ export const randomDML = async (
     initial = INITIAL_NUMBER,
     increment = INCREMENTAL_NUMBER
 ) => {
-    let init = initial
+    let i = 0
+    let u = 0
+    let d = 0
     try {
         // Batch insert
-        await batchInsert(init)
+        await batchInsert(initial)
+        console.info(`Initial batch inserted: ${initial}`)
 
         // Perform random DML operations
         await Promise.all(
-            [...Array(increment).keys()].map(async () => {
-                const randomNumber = Math.floor(Math.random() * init) + 1
+            [...Array(increment).keys()].map(() => {
+                const randomNumber = Math.floor(Math.random() * initial) + 1
                 const randomOperation = Math.floor(Math.random() * 3)
 
                 try {
                     switch (randomOperation) {
                         case 0:
                             // INSERT
-                            init += 1
-                            return await knexClient(TABLE_NAME).insert({
-                                id: init,
+                            i += 1
+                            return knexClient(TABLE_NAME).insert({
+                                id: initial + i,
                                 ...generateRandomRow(),
                             })
                         case 1:
                             // UPDATE
-                            return await knexClient(TABLE_NAME)
+                            u += 1
+                            return knexClient(TABLE_NAME)
                                 .update(generateRandomRow())
                                 .where({ id: randomNumber })
                         case 2:
                             // DELETE
-                            return await knexClient(TABLE_NAME)
+                            d += 1
+                            return knexClient(TABLE_NAME)
                                 .delete()
                                 .where({ id: randomNumber })
                     }
@@ -89,6 +92,10 @@ export const randomDML = async (
                 }
             })
         )
+
+        console.info(`DML Inserted: ${i}`)
+        console.info(`DML Updated: ${u}`)
+        console.info(`DML Deleted: ${d}`)
     } catch (error) {
         return Promise.reject(error)
     }
