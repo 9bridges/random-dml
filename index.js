@@ -1,97 +1,15 @@
-import config from 'config'
 import minimist from 'minimist'
-import { faker } from '@faker-js/faker'
 
-import { knexClient, knexInspector } from './knex.js'
+import { knexInspector } from './knex.js'
+import { batchInsert, batchUpdate, batchDelete, randomDML } from './core.js'
 import { generateRandomRow } from './helper.js'
+import { TABLE_NAME } from './constant.js'
 
-const TABLE_NAME = config.get('db.table')
-let COLUMN_INFO
-
-const batchInsert = async () => {
-    const NUMBER = config.get('number.insert')
-    try {
-        await knexClient.batchInsert(
-            TABLE_NAME,
-            [...Array(NUMBER).keys()].map((n) => ({
-                id: n + 1,
-                ...generateRandomRow(COLUMN_INFO),
-            }))
-        )
-    } catch (error) {
-        return Promise.reject(error)
-    }
-}
-
-const batchUpdate = async () => {}
-const batchDelete = async () => {}
-
-const randomDML = async () => {
-    let INITIAL_NUMBER = config.get('number.random.initial')
-    const INCREMENTAL_NUMBER = config.get('number.random.dml')
-
-    try {
-        // Check empty table first
-        const [{ count: rowCount }] = await knexClient(TABLE_NAME).count({
-            count: '*',
-        })
-
-        if (rowCount === 0) {
-            // Insert a certain number of records
-            await knexClient.batchInsert(
-                TABLE_NAME,
-                [...Array(INITIAL_NUMBER).keys()].map((n) => ({
-                    id: n + 1,
-                    name: faker.name.firstName(),
-                }))
-            )
-        } else {
-            INITIAL_NUMBER = rowCount
-        }
-
-        // Perform random DML operations
-        await Promise.all(
-            [...Array(INCREMENTAL_NUMBER).keys()].map(async () => {
-                const randomNumber =
-                    Math.floor(Math.random() * INITIAL_NUMBER) + 1
-                const randomOperation = Math.floor(Math.random() * 3)
-
-                try {
-                    switch (randomOperation) {
-                        case 0:
-                            // INSERT
-                            INITIAL_NUMBER += 1
-                            return await knexClient(TABLE_NAME).insert({
-                                id: INITIAL_NUMBER,
-                                name: faker.name.firstName(),
-                            })
-                        case 1:
-                            // UPDATE
-                            return await knexClient(TABLE_NAME)
-                                .update({
-                                    name: `${faker.name.firstName()}（已改）`,
-                                })
-                                .where({ id: randomNumber })
-                        case 2:
-                            // DELETE
-                            return await knexClient(TABLE_NAME)
-                                .delete()
-                                .where({ id: randomNumber })
-                    }
-                } catch (error) {
-                    console.error(error)
-                }
-            })
-        )
-    } catch (error) {
-        return Promise.reject(error)
-    }
-}
-
-;(async () => {
+const run = async () => {
     const { o, t } = minimist(process.argv.slice(2))
     try {
-        COLUMN_INFO = await knexInspector.columnInfo(TABLE_NAME)
+        // async init
+        global.COLUMN_INFO = await knexInspector.columnInfo(TABLE_NAME)
 
         if (o) {
             switch (o) {
@@ -127,4 +45,6 @@ const randomDML = async () => {
         console.error(error)
         process.exit(1)
     }
-})()
+}
+
+run()
