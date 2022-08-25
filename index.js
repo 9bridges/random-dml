@@ -1,6 +1,6 @@
 import minimist from 'minimist'
 
-import { knexInspector } from './knex.js'
+import { knexClient, knexInspector } from './knex.js'
 import { batchInsert, batchUpdate, batchDelete, randomDML } from './core.js'
 import { generateRandomRow, getPrimaryKey } from './helper.js'
 import { TABLE_NAME } from './constant.js'
@@ -49,6 +49,9 @@ const run = async () => {
     } catch (error) {
         console.error(error)
         process.exit(1)
+    } finally {
+        // close knex instance
+        await knexClient.destroy()
     }
 }
 
