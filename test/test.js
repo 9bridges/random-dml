@@ -1,4 +1,5 @@
 import chai from 'chai'
+import got from 'got'
 
 import { knexClient, knexInspector } from '../knex.js'
 import { TABLE_NAME } from '../constant.js'
@@ -32,6 +33,45 @@ describe('Helper Function', function () {
         it('should be an object', function () {
             const pk = getPrimaryKey()
             chai.expect(pk).to.be.an('object')
+        })
+    })
+})
+
+describe('Jar', function () {
+    describe('#run()', function () {
+        it('response should be an object', async function () {
+            const response = await got
+                .post(
+                    'http://43.140.210.213:8081/jars/bf71e6ab-24b5-4cf4-a75c-41d61332a2df_synjq-1.0.0-SNAPSHOT-all.jar/run/',
+                    {
+                        json: {
+                            programArgs: `--name John --source ${JSON.stringify(
+                                [
+                                    {
+                                        name: 'John',
+                                        age: 20,
+                                    },
+                                    {
+                                        name: 'Jane',
+                                        age: 21,
+                                    },
+                                ]
+                            )} --sink ${JSON.stringify([
+                                {
+                                    name: 'John',
+                                    age: 20,
+                                },
+                                {
+                                    name: 'Jane',
+                                    age: 21,
+                                },
+                            ])}`,
+                        },
+                    }
+                )
+                .json()
+            console.log(response)
+            chai.expect(response).to.be.an('object')
         })
     })
 })
