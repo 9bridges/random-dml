@@ -1,10 +1,15 @@
 import { faker } from '@faker-js/faker'
 
-export const generateRandomRow = () =>
+export const generateRandomRow = (index) =>
     global.COLUMN_INFO.reduce((acc, column) => {
-        const { name, data_type, is_primary_key, default_value } = column
-        if (is_primary_key) return acc
-        // if (default_value) return acc
+        const { name, data_type, is_primary_key } = column
+
+        if (index && is_primary_key) {
+            return {
+                ...acc,
+                [name]: index,
+            }
+        }
 
         let value
         switch (data_type) {
@@ -13,7 +18,7 @@ export const generateRandomRow = () =>
             case 'numeric':
                 const { numeric_precision, numeric_scale } = column
                 value = faker.datatype.number({
-                    max: 10 ** numeric_precision,
+                    max: 10 ** (numeric_precision - numeric_scale),
                     precision: 1 / 10 ** numeric_scale,
                 })
                 break

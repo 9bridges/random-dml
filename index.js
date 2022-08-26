@@ -2,14 +2,17 @@ import minimist from 'minimist'
 
 import { knexClient, knexInspector } from './knex.js'
 import { batchInsert, batchUpdate, batchDelete, randomDML } from './core.js'
-import { generateRandomRow, getPrimaryKey } from './helper.js'
+import { getPrimaryKey } from './helper.js'
 import { TABLE_NAME } from './constant.js'
 
 const run = async () => {
-    const { o, t } = minimist(process.argv.slice(2))
+    const { o } = minimist(process.argv.slice(2))
     try {
-        // async init
         global.COLUMN_INFO = await knexInspector.columnInfo(TABLE_NAME)
+
+        // pk check
+        const pkObject = getPrimaryKey()
+        if (!pkObject) throw new Error('No primary key found. Exitting...')
 
         if (o) {
             switch (o) {
@@ -24,19 +27,6 @@ const run = async () => {
                 case 'd':
                     console.log('Performing batch delete...')
                     await batchDelete()
-                    break
-            }
-        } else if (t) {
-            switch (t) {
-                case 'row':
-                    console.log('TEST: Generating a random row...')
-                    const row = await generateRandomRow()
-                    console.log(row)
-                    break
-                case 'pk':
-                    console.log('TEST: Looking for the primary key...')
-                    const primaryKey = getPrimaryKey()
-                    console.log(primaryKey)
                     break
             }
         } else {

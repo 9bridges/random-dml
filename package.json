@@ -9,8 +9,6 @@
         "insert": "node index.js -o i",
         "update": "node index.js -o u",
         "delete": "node index.js -o d",
-        "testRow": "nodemon index.js -t row",
-        "findPK": "nodemon index.js -t pk",
         "test": "mocha"
     },
     "repository": {

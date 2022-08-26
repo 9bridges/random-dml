@@ -5,8 +5,8 @@
         "port": 3306,
         "user": "jiuqiao",
         "password": "jiuqiao",
-        "database": "jiuqiao",
-        "table": "test_table"
+        "database": "test",
+        "table": "test_sync_table"
     },
     "number": {
         "insert": 100,

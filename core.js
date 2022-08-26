@@ -21,10 +21,7 @@ export const batchInsert = async (number = INSERT_NUMBER) => {
 
         await knexClient.batchInsert(
             TABLE_NAME,
-            [...Array(number).keys()].map((n) => ({
-                id: n + 1,
-                ...generateRandomRow(),
-            }))
+            [...Array(number).keys()].map((n) => generateRandomRow(n))
         )
     } catch (error) {
         return Promise.reject(error)
@@ -70,10 +67,9 @@ export const randomDML = async (
                         case 0:
                             // INSERT
                             i += 1
-                            return knexClient(TABLE_NAME).insert({
-                                id: initial + i,
-                                ...generateRandomRow(),
-                            })
+                            return knexClient(TABLE_NAME).insert(
+                                generateRandomRow(initial + i)
+                            )
                         case 1:
                             // UPDATE
                             u += 1
