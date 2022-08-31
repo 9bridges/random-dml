@@ -4,7 +4,7 @@ export const generateRandomRow = (index) =>
     global.COLUMN_INFO.reduce((acc, column) => {
         const { name, data_type, is_primary_key } = column
 
-        if (index && is_primary_key) {
+        if (index !== null && is_primary_key) {
             return {
                 ...acc,
                 [name]: index,
