@@ -1,12 +1,12 @@
 {
     "db": {
-        "client": "mysql",
+        "client": "oracledb",
         "host": "101.42.116.95",
-        "port": 3306,
-        "user": "jiuqiao",
-        "password": "jiuqiao",
-        "database": "jiuqiao",
-        "table": "test_table"
+        "port": 1521,
+        "user": "flinkuser",
+        "password": "flinkpw",
+        "database": "jqdb1",
+        "table": "flinkuser.test_table"
     },
     "number": {
         "insert": 100,

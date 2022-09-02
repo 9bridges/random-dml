@@ -18,12 +18,13 @@
     "author": "Bokang Huang <huangbokang@tb-soft.net>",
     "license": "ISC",
     "dependencies": {
-        "@faker-js/faker": "^7.4.0",
         "config": "^3.3.7",
+        "@faker-js/faker": "^7.4.0",
         "knex": "^2.2.0",
         "knex-schema-inspector": "^2.0.4",
         "minimist": "^1.2.6",
-        "mysql": "^2.18.1"
+        "mysql": "^2.18.1",
+        "oracledb": "^5.4.0"
     },
     "devDependencies": {
         "chai": "^4.3.6",
