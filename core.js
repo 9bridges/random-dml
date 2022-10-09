@@ -3,6 +3,7 @@ import { generateRandomRow } from './helper.js'
 import {
     TABLE_NAME,
     INSERT_NUMBER,
+    CHUNK_SIZE,
     INITIAL_NUMBER,
     INCREMENTAL_NUMBER,
 } from './constant.js'
@@ -21,7 +22,8 @@ export const batchInsert = async (number = INSERT_NUMBER) => {
 
         await knexClient.batchInsert(
             TABLE_NAME,
-            [...Array(number).keys()].map((n) => generateRandomRow(n + 1))
+            [...Array(number).keys()].map((n) => generateRandomRow(n + 1)),
+            CHUNK_SIZE
         )
     } catch (error) {
         return Promise.reject(error)
