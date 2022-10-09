@@ -20,9 +20,10 @@ Fill in `config/default.json`
     },
     // Optional
     "number": {
-        "insert": 100,
-        "update": 100,
-        "delete": 100,
+        "dml": {
+            "total": 100,
+            "chunkSize": 1000
+        },
         "random": {
             "initial": 100,
             "dml": 20
