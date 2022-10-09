@@ -10,8 +10,8 @@
     },
     "number": {
         "dml": {
-            "total": 100,
-            "chunkSize": 1000
+            "total": 1000000,
+            "chunkSize": 10000
         },
         "random": {
             "initial": 100,

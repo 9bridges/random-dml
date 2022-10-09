@@ -1,39 +1,17 @@
 import { faker } from '@faker-js/faker'
 
-export const generateRandomRow = (index) =>
-    global.COLUMN_INFO.reduce((acc, column) => {
-        const { name, data_type, is_primary_key } = column
-
-        if (index !== null && is_primary_key) {
-            return {
-                ...acc,
-                [name]: index,
-            }
-        }
-
-        let value
-        switch (data_type) {
-            case 'int':
-            case 'decimal':
-            case 'numeric':
-                const { numeric_precision, numeric_scale } = column
-                value = faker.datatype.number({
-                    max: 10 ** (numeric_precision - numeric_scale),
-                    precision: 1 / 10 ** numeric_scale,
-                })
-                break
-            case 'varchar':
-            case 'char':
-            case 'text':
-            case 'mediumtext':
-                const { max_length } = column
-                // 10 is default length
-                value = faker.datatype.string(max_length < 10 ? max_length : 10)
-                break
-        }
-
-        return {
-            ...acc,
-            [name]: value,
-        }
-    }, {})
+export const generateRandomRow = (index) => ({
+    ID: index + 1,
+    VARCHAR2_18: faker.datatype.string(18),
+    VARCHAR2_36: faker.datatype.string(36),
+    VARCHAR2_100: faker.datatype.string(100),
+    VARCHAR2_150: faker.datatype.string(150),
+    VARCHAR2_255: faker.datatype.string(255),
+    NUMBER_10: faker.datatype.number({ max: 10 ** 10 }),
+    NUMBER_20: faker.datatype.number({ max: 10 ** 20 }),
+    NUMBER_25: faker.datatype.number({ max: 10 ** 25 }),
+    NUMBER_32: faker.datatype.number({ max: 10 ** 32 }),
+    NUMBER_35: faker.datatype.number({ max: 10 ** 35 }),
+    CHAR_1: faker.datatype.string(1),
+    TCLOB: faker.datatype.string(4000),
+})

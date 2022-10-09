@@ -7,7 +7,7 @@ import { TABLE_NAME } from './constant.js'
 const run = async () => {
     const { o } = minimist(process.argv.slice(2))
     try {
-        global.COLUMN_INFO = await knexInspector.columnInfo(TABLE_NAME)
+        // global.COLUMN_INFO = await knexInspector.columnInfo(TABLE_NAME)
 
         // pk check
         const primaryKey = await knexInspector.primary(TABLE_NAME)

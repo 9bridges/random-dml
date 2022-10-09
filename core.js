@@ -22,7 +22,7 @@ export const batchInsert = async (number = INSERT_NUMBER) => {
 
         await knexClient.batchInsert(
             TABLE_NAME,
-            [...Array(number).keys()].map((n) => generateRandomRow(n + 1)),
+            [...Array(number).keys()].map((n) => generateRandomRow(n)),
             CHUNK_SIZE
         )
     } catch (error) {
