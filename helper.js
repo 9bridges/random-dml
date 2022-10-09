@@ -37,6 +37,3 @@ export const generateRandomRow = (index) =>
             [name]: value,
         }
     }, {})
-
-export const getPrimaryKey = () =>
-    global.COLUMN_INFO.find((column) => column.is_primary_key)

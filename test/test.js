@@ -2,7 +2,7 @@ import chai from 'chai'
 
 import { knexClient, knexInspector } from '../knex.js'
 import { TABLE_NAME } from '../constant.js'
-import { getPrimaryKey, generateRandomRow } from '../helper.js'
+import { generateRandomRow } from '../helper.js'
 
 // describe('Array', function () {
 //     describe('#indexOf()', function () {
@@ -26,12 +26,6 @@ describe('Helper Function', function () {
         it('should be an object', function () {
             const randomRow = generateRandomRow()
             chai.expect(randomRow).to.be.an('object')
-        })
-    })
-    describe('#getPrimaryKey()', function () {
-        it('should be an object', function () {
-            const pk = getPrimaryKey()
-            chai.expect(pk).to.be.an('object')
         })
     })
 })
