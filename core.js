@@ -32,7 +32,9 @@ export const batchInsert = async (number = INSERT_NUMBER) => {
 
 export const batchUpdate = async () => {
     try {
-        await knexClient(TABLE_NAME).update(generateRandomRow())
+        await knexClient(TABLE_NAME).update({
+            VARCHAR2_18: '已更新字段',
+        })
     } catch (error) {
         return Promise.reject(error)
     }

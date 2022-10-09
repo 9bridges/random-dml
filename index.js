@@ -2,7 +2,7 @@ import minimist from 'minimist'
 
 import { knexClient, knexInspector } from './knex.js'
 import { batchInsert, batchUpdate, batchDelete, randomDML } from './core.js'
-import { TABLE_NAME } from './constant.js'
+import { TABLE_NAME, INSERT_NUMBER } from './constant.js'
 
 const run = async () => {
     const { o } = minimist(process.argv.slice(2))
@@ -16,7 +16,9 @@ const run = async () => {
         if (o) {
             switch (o) {
                 case 'i':
-                    console.log('Performing batch insert...')
+                    console.log(
+                        `Performing batch insert of ${INSERT_NUMBER} rows...`
+                    )
                     await batchInsert()
                     break
                 case 'u':
