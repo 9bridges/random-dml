@@ -6,7 +6,7 @@
         "user": "root",
         "password": "root",
         "database": "jq",
-        "table": "test0"
+        "table": "test5"
     },
     "number": {
         "dml": {
