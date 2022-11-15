@@ -1,33 +1,32 @@
 {
-    "name": "random-dml",
-    "version": "1.0.0",
-    "description": "A Node.js script that randomly executes DML statement",
-    "main": "index.js",
-    "type": "module",
-    "scripts": {
-        "start": "node index.js",
-        "insert": "node index.js -o i",
-        "update": "node index.js -o u",
-        "delete": "node index.js -o d",
-        "test": "mocha"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://gitee.com/tb-soft/random-dml.git"
-    },
-    "author": "Bokang Huang <huangbokang@tb-soft.net>",
-    "license": "ISC",
-    "dependencies": {
-        "config": "^3.3.8",
-        "@faker-js/faker": "^7.5.0",
-        "knex": "^2.3.0",
-        "knex-schema-inspector": "^2.0.4",
-        "minimist": "^1.2.6",
-        "mysql": "^2.18.1",
-        "oracledb": "^5.5.0"
-    },
-    "devDependencies": {
-        "chai": "^4.3.6",
-        "mocha": "^10.0.0"
-    }
+  "name": "random-dml",
+  "version": "1.0.0",
+  "description": "A Node.js script that randomly executes DML statement",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "insert": "node index.js -o i",
+    "update": "node index.js -o u",
+    "delete": "node index.js -o d",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/tb-soft/random-dml.git"
+  },
+  "author": "Bokang Huang <huangbokang@tb-soft.net>",
+  "license": "ISC",
+  "dependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "config": "^3.3.8",
+    "knex": "^2.3.0",
+    "minimist": "^1.2.7",
+    "mysql": "^2.18.1",
+    "oracledb": "^5.5.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.1.0"
+  }
 }

@@ -1,17 +1,17 @@
 import minimist from 'minimist'
 
-import { knexClient, knexInspector } from './knex.js'
+import { knexClient } from './knex.js'
 import { batchInsert, batchUpdate, batchDelete, randomDML } from './core.js'
 import { TABLE_NAME } from './constant.js'
 
 const run = async () => {
     const { o } = minimist(process.argv.slice(2))
     try {
-        global.COLUMN_INFO = await knexInspector.columnInfo(TABLE_NAME)
+        global.COLUMN_INFO = await knexClient(TABLE_NAME).columnInfo()
 
         // pk check
-        const primaryKey = await knexInspector.primary(TABLE_NAME)
-        if (!primaryKey) throw new Error('No primary key found. Exitting...')
+        // const primaryKey = await knexInspector.primary(TABLE_NAME)
+        // if (!primaryKey) throw new Error('No primary key found. Exitting...')
 
         if (o) {
             switch (o) {

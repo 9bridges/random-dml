@@ -1,6 +1,5 @@
 import config from 'config'
 import knex from 'knex'
-import schemaInspector from 'knex-schema-inspector'
 
 export const knexClient = knex({
     client: config.get('db.client'),
@@ -12,5 +11,3 @@ export const knexClient = knex({
         database: config.get('db.database'),
     },
 })
-
-export const knexInspector = schemaInspector.default(knexClient)

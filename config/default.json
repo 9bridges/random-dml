@@ -1,12 +1,12 @@
 {
     "db": {
-        "client": "oracledb",
-        "host": "101.42.116.95",
-        "port": 1521,
-        "user": "flinkuser",
-        "password": "flinkpw",
-        "database": "jqdb1",
-        "table": "flinkuser.test_table"
+        "client": "mysql",
+        "host": "81.70.133.193",
+        "port": 3305,
+        "user": "root",
+        "password": "root",
+        "database": "jq",
+        "table": "test0"
     },
     "number": {
         "dml": {

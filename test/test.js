@@ -1,6 +1,6 @@
 import chai from 'chai'
 
-import { knexClient, knexInspector } from '../knex.js'
+import { knexClient } from '../knex.js'
 import { TABLE_NAME } from '../constant.js'
 import { generateRandomRow } from '../helper.js'
 
@@ -13,13 +13,13 @@ import { generateRandomRow } from '../helper.js'
 // })
 
 before(async function () {
-    global.COLUMN_INFO = await knexInspector.columnInfo(TABLE_NAME)
+    global.COLUMN_INFO = await knexClient(TABLE_NAME).columnInfo()
 })
 
 describe('Helper Function', function () {
     describe('#getColumnInfo()', function () {
-        it('should be an array', function () {
-            chai.expect(global.COLUMN_INFO).to.be.an('array')
+        it('should be an object', function () {
+            chai.expect(global.COLUMN_INFO).to.be.an('object')
         })
     })
     describe('#generateRandomRow()', function () {
